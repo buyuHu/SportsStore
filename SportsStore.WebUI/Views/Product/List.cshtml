@@ -4,8 +4,12 @@
 @{ 
     ViewBag.Title = "Products";
 }
+@foreach (var p in Model.Products)
+{
+    @Html.Partial("ProductSummary", p)
+        }
 
-@foreach(var p in Model.Products)
+@*@foreach(var p in Model.Products)
 {
     <div class="well">
         <h3>
@@ -14,7 +18,7 @@
         </h3>
         <span class="lead">@p.Description</span>
     </div>
-}
-<div class="btn-group pull-left">
-    @Html.PageLinks(Model.PagingInfo,x=>Url.Action("List",new { Page=x}))
+}*@
+<div class="btn-group pull-right">
+    @Html.PageLinks(Model.PagingInfo,x=>Url.Action("List",new { Page=x,category=Model.CurrentCategory}))
 </div>
