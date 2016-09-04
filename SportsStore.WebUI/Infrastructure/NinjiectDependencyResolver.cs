@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Ninject;
 using Moq;
 using SportsStore.Domain.Concrete;
+using System.Configuration;
 
 
 namespace SportsStore.WebUI.Infractructure
@@ -23,6 +24,16 @@ namespace SportsStore.WebUI.Infractructure
         private void AddiBindings()
         {
             kernel.Bind<IProductsRepository>().To<EFProductRepository>();
+
+            EmailSettings emailSettings = new EmailSettings
+            {
+                WriteAsFile = bool.Parse(ConfigurationManager.AppSettings["Email.WriteAsFile"] ?? "false")
+
+            };
+
+            kernel.Bind<IOrderProcessor>().To<EmailOrderProcessor>().WithConstructorArgument("setting", emailSettings);
+
+
             //Mock<IProductsRepository> mock = new Mock<IProductsRepository>();
             //mock.Setup(m => m.Products).Returns(new List<Product>
             //{
